@@ -22,19 +22,19 @@
         h1 {
             font-size: 3rem;
             color: #D85C5C;
-            margin-top: 10vh;
+            margin-top: 6vh;
             font-family: 'Georgia', serif;
         }
 
         .button-container {
             position: relative;
-            top: 15vh;
+            top: 5vh;
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 20px;
-            width: 60vw;
-            height: 60vh;
+            width: 40vw;
+            height: 40vh;
             border: 3px solid #D85C5C;
             border-radius: 20px;
             background-color: #ffffff;
@@ -54,7 +54,7 @@
         #yes {
             background-color: #F1B6B6;
             color: white;
-            transition: transform 0.3s ease-out;
+            transition: all 0.3s ease-out;
         }
 
         #no {
@@ -70,10 +70,9 @@
         }
 
         .signature {
-            position: absolute;
-            bottom: 10px;
-            font-size: 1.2rem;
+            font-size: 1.5rem;
             color: #D85C5C;
+            margin-top: 3vh;
         }
     </style>
 </head>
@@ -86,35 +85,26 @@
     
     <div id="yayMessage">YAYYYYY!!!!</div>
     
+    <div class="signature">By KH ❤️</div>
+    
     <script>
         let noButton = document.getElementById('no');
         let yesButton = document.getElementById('yes');
         let yayMessage = document.getElementById('yayMessage');
         let buttonContainer = document.getElementById('button-container');
         let noClickCount = 0;
-        let yesSize = 1;
-        let maxSizeReached = false;
+        let maxClicks = 10;
         let noTexts = [
-            "Are you sure? My heart is breaking! 💔", 
-            "But we're perfect together! 😭", 
-            "I made cookies... please stay? 🍪🥺", 
-            "I'll be the happiest if you say yes! 😊", 
-            "Don't you love me just a little? 😢", 
-            "I’ll give you unlimited hugs! 🤗", 
-            "Saying yes comes with free cuddles! 🐻", 
-            "If you say yes, I'll be your biggest fan! 🎉", 
-            "My heart is sad, only you can fix it! 💘", 
-            "You're the peanut butter to my jelly! 🥜🍇", 
-            "Let's make this the best Valentine's ever! 💕", 
-            "I promise to make you laugh forever! 😆", 
-            "One yes = one million kisses! 😘", 
-            "Do you really want to make me cry? 😭", 
-            "My love for you is infinite! ♾️❤️", 
-            "Even the stars want us to be together! ✨", 
-            "Every 'No' makes me sadder... 🥺", 
-            "If you click yes, I'll do a happy dance! 💃", 
-            "You wouldn't want to break my heart, right? 💔", 
-            "Please? I'll do anything for you! 🙏"
+            "Are you sure?🤨", 
+            "But WHY???😭", 
+            "Please give me a chance🥺", 
+            "I promise you that you won't regret it😊", 
+            "Why are you still pressing no😢", 
+            "Imma die now💀", 
+            "Would you date me now that I'm a ghost👻", 
+            "Aight, you left me no choice. Time for some magic🪄", 
+            "Skidaddle, skadoodle🧙‍♂️", 
+            "You're now in love with me✨"
         ];
 
         function yesClicked() {
@@ -123,16 +113,14 @@
         }
 
         function noClicked() {
-            noButton.textContent = noTexts[noClickCount % noTexts.length];
-            noClickCount++;
-            moveButtonRandomly(noButton);
-            if (!maxSizeReached) {
-                yesSize += 0.1;
-                yesButton.style.transform = `scale(${yesSize})`;
-                let containerRect = document.querySelector('.button-container').getBoundingClientRect();
-                let yesButtonRect = yesButton.getBoundingClientRect();
-                if (yesButtonRect.width >= containerRect.width || yesButtonRect.height >= containerRect.height) {
-                    maxSizeReached = true;
+            if (noClickCount < maxClicks) {
+                noButton.textContent = noTexts[noClickCount % noTexts.length];
+                noClickCount++;
+                moveButtonRandomly(noButton);
+                let growthFactor = noClickCount / maxClicks;
+                yesButton.style.width = `${growthFactor * 100}%`;
+                yesButton.style.height = `${growthFactor * 100}%`;
+                if (noClickCount === maxClicks) {
                     noButton.style.display = 'none';
                 }
             }
@@ -149,6 +137,5 @@
             button.style.top = `${newY}px`;
         }
     </script>
-    <div class="signature">By KH ❤️</div>
 </body>
 </html>
