@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Will you be my Valentine Naomi?</title>
+    <title>Will you be my Valentine, Naomi?</title>
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
     <style>
         body {
@@ -16,41 +16,33 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start;
+            justify-content: center;
             overflow: hidden;
+            position: relative;
         }
 
         h1 {
             font-size: 3rem;
             color: #D85C5C;
-            margin-top: 6vh;
+            margin-bottom: 40px;
         }
 
-        .button-container {
-            position: relative;
-            top: 5vh;
+        .buttons {
             display: flex;
+            gap: 20px;
             justify-content: center;
             align-items: center;
-            gap: 20px;
-            width: 30vw;
-            height: 30vh;
-            border: 3px solid #D85C5C;
-            border-radius: 20px;
-            background-color: #FA8072;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            margin-bottom: 5vh;
+            position: absolute;
         }
 
         .btn {
             font-family: 'Pacifico', cursive;
-            font-size: 1.2rem;
-            padding: 12px 20px;
+            font-size: 2rem;
+            padding: 20px 40px;
             border: none;
             cursor: pointer;
             transition: all 0.3s ease;
             border-radius: 10px;
-            position: absolute;
         }
 
         #yes {
@@ -62,18 +54,18 @@
         #no {
             background-color: #fc0000;
             color: black;
-            transition: left 0.3s ease, top 0.3s ease;
+            position: absolute;
         }
 
         #yayMessage {
-            font-size: 4rem;
+            font-size: 3rem;
             display: none;
             color: #D85C5C;
-            margin-top: 20vh;
             animation: typing 2s steps(22) forwards;
             overflow: hidden;
             white-space: nowrap;
             width: 0;
+            margin-top: 20px;
         }
 
         @keyframes typing {
@@ -84,7 +76,8 @@
         .signature {
             font-size: 1.5rem;
             color: #D85C5C;
-            margin-top: 3vh;
+            margin-top: auto;
+            margin-bottom: 20px;
         }
 
         #goBack {
@@ -103,9 +96,10 @@
 </head>
 <body>
     <h1>Will you be my Valentine, Naomi? 💖</h1>
-    <div id="button-container" class="button-container">
+
+    <div class="buttons">
         <button id="yes" class="btn" onclick="yesClicked()">Yes</button>
-        <button id="no" class="btn" onclick="noClicked()">No</button>
+        <button id="no" class="btn">No</button>
     </div>
     
     <div id="yayMessage">He He. You're mine now ❤️</div>
@@ -117,45 +111,42 @@
         let noButton = document.getElementById('no');
         let yesButton = document.getElementById('yes');
         let yayMessage = document.getElementById('yayMessage');
-        let buttonContainer = document.getElementById('button-container');
         let goBackButton = document.getElementById('goBack');
-        let noClickCount = 0;
-        let maxClicks = 10;
+        let yesSize = 1;
 
         function yesClicked() {
-            buttonContainer.style.display = 'none';
+            yesButton.style.display = 'none';
+            noButton.style.display = 'none';
             yayMessage.style.display = 'block';
             goBackButton.style.display = 'block';
         }
 
-        function noClicked() {
-            if (noClickCount < maxClicks) {
-                noClickCount++;
-                noButton.textContent = "Nuh Uh";
-                moveButtonRandomly(noButton);
-                let scaleFactor = 1 + (noClickCount * 0.4);
-                yesButton.style.transform = `scale(${scaleFactor})`;
-                if (noClickCount === maxClicks) {
-                    noButton.style.display = 'none';
-                }
-            }
-        }
-        
-        function moveButtonRandomly(button) {
-            let container = document.querySelector('.button-container');
-            let maxX = container.clientWidth - button.clientWidth;
-            let maxY = container.clientHeight - button.clientHeight;
-            button.style.left = `${Math.min(Math.random() * maxX, maxX - 10)}px`;
-            button.style.top = `${Math.min(Math.random() * maxY, maxY - 10)}px`;
-        }
+        noButton.addEventListener('mouseenter', function() {
+            // Get the current window width and height
+            let maxX = window.innerWidth - noButton.offsetWidth - 20;
+            let maxY = window.innerHeight - noButton.offsetHeight - 20;
+            
+            // Calculate new positions, ensuring that the button stays within the window bounds
+            let newX = Math.random() * (maxX);
+            let newY = Math.random() * (maxY);
+            
+            // Apply the new position to the button
+            noButton.style.position = 'absolute';
+            noButton.style.left = `${newX}px`;
+            noButton.style.top = `${newY}px`;
+            
+            // Enlarge the Yes button a bit
+            yesSize += 0.2;
+            yesButton.style.transform = `scale(${yesSize})`;
+        });
 
         function goBack() {
-            buttonContainer.style.display = 'flex';
+            yesButton.style.display = 'block';
+            noButton.style.display = 'block';
             yayMessage.style.display = 'none';
             goBackButton.style.display = 'none';
-            noButton.style.display = 'block';
-            noClickCount = 0;
-            yesButton.style.transform = "scale(1)";
+            yesButton.style.transform = 'scale(1)';
+            yesSize = 1;
         }
     </script>
 </body>
