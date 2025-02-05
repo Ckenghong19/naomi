@@ -57,13 +57,11 @@
         #yes {
             background-color: #2afc00;
             color: black;
-            transition: all 0.3s ease-out;
         }
 
         #no {
             background-color: #fc0000;
             color: black;
-            transition: all 0.3s ease-in-out;
         }
 
         #yayMessage {
@@ -84,10 +82,9 @@
             font-size: 1.5rem;
             color: #D85C5C;
             margin-top: 3vh;
-            position: relative;
         }
 
-        #goBack {
+        #goBack, #muteButton {
             font-family: 'Pacifico', cursive;
             display: none;
             margin-top: 20px;
@@ -99,6 +96,12 @@
             background-color: #FA8072;
             color: white;
         }
+
+        #loveGif {
+            display: none;
+            width: 200px;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -108,10 +111,16 @@
         <button id="no" class="btn" onclick="noClicked()">No</button>
     </div>
     
-    <div id="yayMessage">YAYYYYY!!!! You're mine now ❤️</div>
+    <div id="yayMessage">He He. You're mine now ❤️</div>
+    <img id="loveGif" src="https://media.giphy.com/media/l0HlNQ03J5JxX6lva/giphy.gif" alt="Love GIF">
     <button id="goBack" onclick="goBack()">Go Back</button>
+    <button id="muteButton" onclick="toggleMusic()">🔊 Mute</button>
     
     <div class="signature">By KH ❤️</div>
+    
+    <audio id="bgMusic" loop>
+        <source src="your-music-file.mp3" type="audio/mpeg">
+    </audio>
     
     <script>
         let noButton = document.getElementById('no');
@@ -119,61 +128,62 @@
         let yayMessage = document.getElementById('yayMessage');
         let buttonContainer = document.getElementById('button-container');
         let goBackButton = document.getElementById('goBack');
+        let loveGif = document.getElementById('loveGif');
+        let muteButton = document.getElementById('muteButton');
+        let bgMusic = document.getElementById('bgMusic');
         let noClickCount = 0;
         let maxClicks = 10;
-        let noTexts = [
-            "Are you sure?🤨", 
-            "But WHY???😭", 
-            "Please give me a chance🥺", 
-            "I promise you that you won't regret it😊", 
-            "Why are you still pressing no😢", 
-            "You're killin me here💀", 
-            "Aight, you left me no choice. Time for some magic🪄", 
-            "Skidaddle, skadoodle, you're now in love with me🧙‍♂️", 
-            "He He✨", 
-        ];
 
         function yesClicked() {
             buttonContainer.style.display = 'none';
             yayMessage.style.display = 'block';
+            loveGif.style.display = 'block';
             goBackButton.style.display = 'block';
-            confetti();
-        }
+            muteButton.style.display = 'block';
+            bgMusic.play();
+          }
 
         function noClicked() {
             if (noClickCount < maxClicks) {
-                noButton.textContent = noTexts[noClickCount % noTexts.length];
+                noButton.textContent = "Nuh Uh";
                 noClickCount++;
                 moveButtonRandomly(noButton);
-                let growthFactor = noClickCount / maxClicks;
-                yesButton.style.width = `${growthFactor * 40}vw`;
-                yesButton.style.height = `${growthFactor * 40}vh`;
+                yesButton.style.width = `${noClickCount * 10}%`;
+                yesButton.style.height = `${noClickCount * 10}%`;
                 if (noClickCount === maxClicks) {
                     noButton.style.display = 'none';
                 }
             }
         }
-
-        function moveButtonRandomly(button) {
+      function moveButtonRandomly(button) {
             let container = document.querySelector('.button-container');
-            let containerRect = container.getBoundingClientRect();
-            let maxX = containerRect.width - button.offsetWidth - 10;
-            let maxY = containerRect.height - button.offsetHeight - 10;
-            let newX = Math.random() * maxX;
-            let newY = Math.random() * maxY;
-            button.style.left = `${newX}px`;
-            button.style.top = `${newY}px`;
+            let maxX = container.clientWidth - button.clientWidth;
+            let maxY = container.clientHeight - button.clientHeight;
+            button.style.left = `${Math.random() * maxX}px`;
+            button.style.top = `${Math.random() * maxY}px`;
         }
 
         function goBack() {
             buttonContainer.style.display = 'flex';
             yayMessage.style.display = 'none';
+            loveGif.style.display = 'none';
             goBackButton.style.display = 'none';
+            muteButton.style.display = 'none';
             noButton.style.display = 'block';
             noClickCount = 0;
             yesButton.style.width = "auto";
             yesButton.style.height = "auto";
-            noButton.textContent = "No";
+            bgMusic.pause();
+        }
+
+        function toggleMusic() {
+            if (bgMusic.paused) {
+                bgMusic.play();
+                muteButton.textContent = "🔇 Mute";
+            } else {
+                bgMusic.pause();
+                muteButton.textContent = "🔊 Unmute";
+            }
         }
     </script>
 </body>
