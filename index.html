@@ -155,6 +155,19 @@
         let goBackButton = document.getElementById('goBack');
         let messageContainer = document.getElementById('messageContainer');
 
+        let sounds = {
+            yes: new Audio('https://www.myinstants.com/media/sounds/happy-happy-happy-cat.mp3'),
+            no: new Audio('https://www.myinstants.com/media/sounds/vine-boom.mp3'),
+            goBack: new Audio('https://www.myinstants.com/media/sounds/aughhhhh-aughhhhh.mp3')
+        };
+
+        function playSound(type) {
+            if (sounds[type]) {
+                sounds[type].currentTime = 0;
+                sounds[type].play();
+            }
+        }
+
         function yesClicked() {
             playSound('yes');
             yesButton.style.display = 'none';
@@ -167,23 +180,17 @@
 
         function moveNoButton() {
             playSound('no');
-            let maxX = window.innerWidth - noButton.offsetWidth - 50;
-            let maxY = window.innerHeight - noButton.offsetHeight - 50;
-            let newX = Math.random() * maxX;
-            let newY = Math.random() * maxY;
-            noButton.style.left = `${newX}px`;
-            noButton.style.top = `${newY}px`;
+            let maxX = window.innerWidth - noButton.offsetWidth - 100;
+            let maxY = window.innerHeight - noButton.offsetHeight - 100;
+            noButton.style.left = `${Math.max(10, Math.random() * maxX)}px`;
+            noButton.style.top = `${Math.max(10, Math.random() * maxY)}px`;
         }
 
         function goBack() {
+            playSound('goBack');
             yesButton.style.display = 'block';
             noButton.style.display = 'block';
             messageContainer.style.display = 'none';
-        }
-
-        function playSound(type) {
-            let audio = new Audio(type === 'yes' ? 'https://www.myinstants.com/media/sounds/happy-happy-happy-cat.mp3' : 'https://www.myinstants.com/media/sounds/vine-boom.mp3');
-            audio.play();
         }
 
         function createHearts() {
@@ -192,9 +199,10 @@
                 heart.innerHTML = '❤️';
                 heart.classList.add('heart');
                 heart.style.left = Math.random() * 100 + 'vw';
-                heart.style.animationDuration = Math.random() * 3 + 2 + 's';
+                let duration = Math.random() * 3 + 2;
+                heart.style.animationDuration = duration + 's';
                 document.body.appendChild(heart);
-                setTimeout(() => heart.remove(), 5000);
+                setTimeout(() => heart.remove(), duration * 1000);
             }
         }
     </script>
