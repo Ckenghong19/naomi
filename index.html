@@ -55,7 +55,7 @@
             background-color: #FF6961;
             color: black;
             position: absolute;
-            transition: top 0.3s ease, left 0.3s ease;
+            transition: top 0.3s ease, left 0.3s ease, transform 0.3s ease, opacity 0.3s ease;
         }
 
         .message-container {
@@ -155,9 +155,11 @@
         let goBackButton = document.getElementById('goBack');
         let messageContainer = document.getElementById('messageContainer');
 
+        let noClickCount = 0; // Count how many times "No" moves
+
         let sounds = {
             yes: new Audio('https://www.myinstants.com/media/sounds/happy-happy-happy-cat.mp3'),
-            no: new Audio('https://www.myinstants.com/media/sounds/vine-boom.mp3'),
+            no: new Audio('https://www.myinstants.com/media/sounds/nuh-uh.mp3'),
             goBack: new Audio('https://www.myinstants.com/media/sounds/aughhhhh-aughhhhh.mp3')
         };
 
@@ -180,16 +182,32 @@
 
         function moveNoButton() {
             playSound('no');
+
             let maxX = window.innerWidth - noButton.offsetWidth - 100;
             let maxY = window.innerHeight - noButton.offsetHeight - 100;
             noButton.style.left = `${Math.max(10, Math.random() * maxX)}px`;
             noButton.style.top = `${Math.max(10, Math.random() * maxY)}px`;
+
+            // Shrink and fade the "No" button
+            noClickCount++;
+            let newScale = Math.max(0.3, 1 - noClickCount * 0.1); // Shrinks gradually but stops at 30% size
+            let newOpacity = Math.max(0, 1 - noClickCount * 0.1); // Fades out gradually
+
+            noButton.style.transform = `scale(${newScale})`;
+            noButton.style.opacity = newOpacity;
+
+            if (newOpacity <= 0) {
+                noButton.style.display = "none"; // Hide the button completely when fully faded
+            }
         }
 
         function goBack() {
             playSound('goBack');
             yesButton.style.display = 'block';
             noButton.style.display = 'block';
+            noButton.style.opacity = 1;
+            noButton.style.transform = 'scale(1)';
+            noClickCount = 0;
             messageContainer.style.display = 'none';
         }
 
