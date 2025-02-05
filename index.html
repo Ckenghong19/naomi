@@ -132,8 +132,8 @@
                 noClickCount++;
                 moveButtonRandomly(noButton);
                 let growthFactor = noClickCount / maxClicks;
-                yesButton.style.width = `${growthFactor * 100}%`;
-                yesButton.style.height = `${growthFactor * 100}%`;
+                yesButton.style.width = `${growthFactor * 40}vw`;
+                yesButton.style.height = `${growthFactor * 40}vh`;
                 if (noClickCount === maxClicks) {
                     noButton.style.display = 'none';
                 }
