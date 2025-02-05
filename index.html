@@ -29,7 +29,6 @@
 
         .buttons {
             display: flex;
-            flex-wrap: wrap;
             gap: 20px;
             justify-content: center;
             align-items: center;
@@ -74,7 +73,6 @@
             overflow: hidden;
             white-space: nowrap;
             display: inline-block;
-            max-width: 100%;
         }
 
         @keyframes typing {
@@ -105,22 +103,6 @@
             transform: scale(1.1);
         }
 
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2.5rem;
-            }
-            .btn {
-                font-size: 1.5rem;
-                padding: 15px 30px;
-            }
-            #yayMessage {
-                font-size: 2rem;
-            }
-            .signature {
-                font-size: 1.2rem;
-            }
-        }
-
         @keyframes floatHearts {
             0% { transform: translateY(0) scale(1); opacity: 1; }
             100% { transform: translateY(-100vh) scale(1.5); opacity: 0; }
@@ -131,6 +113,13 @@
             color: red;
             font-size: 2rem;
             animation: floatHearts 5s linear infinite;
+        }
+
+        .gif-container img {
+            display: none;
+            width: 300px;
+            border-radius: 10px;
+            margin-top: 20px;
         }
     </style>
 </head>
@@ -143,6 +132,9 @@
     
     <div class="message-container" id="messageContainer">
         <div id="yayMessage">He He. You're mine now ❤️</div>
+        <div class="gif-container">
+            <img id="reactionGif" src="https://i.makeagif.com/media/3-25-2020/OTSyuC.gif" alt="Funny GIF">
+        </div>
         <button id="goBack" onclick="goBack()">Go Back</button>
     </div>
     
@@ -154,29 +146,30 @@
         let yayMessage = document.getElementById('yayMessage');
         let goBackButton = document.getElementById('goBack');
         let messageContainer = document.getElementById('messageContainer');
+        let reactionGif = document.getElementById('reactionGif');
 
-        let noClickCount = 0; // Count how many times "No" moves
+        let noClickCount = 0;
 
         let sounds = {
             yes: new Audio('https://www.myinstants.com/media/sounds/happy-happy-happy-cat.mp3'),
             no: new Audio('https://www.myinstants.com/media/sounds/nuh-uh.mp3'),
-            goBack: new Audio('https://www.myinstants.com/media/sounds/aughhhhh-aughhhhh.mp3')
+            goBack: new Audio('https://www.myinstants.com/media/sounds/whu-bird.mp3'),
+            extra: new Audio('https://www.myinstants.com/media/sounds/sum-fuk.mp3')
         };
 
-        function playSound(type) {
-            if (sounds[type]) {
-                sounds[type].currentTime = 0;
-                sounds[type].play();
-            }
-        }
-
         function yesClicked() {
-            playSound('yes');
+            playSound('yes', () => {
+                setTimeout(() => {
+                    playSound('extra');
+                    reactionGif.style.display = 'block';
+                    goBackButton.style.display = 'block';
+                }, 500);
+            });
+
             yesButton.style.display = 'none';
             noButton.style.display = 'none';
             messageContainer.style.display = 'flex';
             yayMessage.style.display = 'inline-block';
-            goBackButton.style.display = 'block';
             createHearts();
         }
 
@@ -188,16 +181,15 @@
             noButton.style.left = `${Math.max(10, Math.random() * maxX)}px`;
             noButton.style.top = `${Math.max(10, Math.random() * maxY)}px`;
 
-            // Shrink and fade the "No" button
             noClickCount++;
-            let newScale = Math.max(0.3, 1 - noClickCount * 0.1); // Shrinks gradually but stops at 30% size
-            let newOpacity = Math.max(0, 1 - noClickCount * 0.1); // Fades out gradually
+            let newScale = Math.max(0.3, 1 - noClickCount * 0.1);
+            let newOpacity = Math.max(0, 1 - noClickCount * 0.1);
 
             noButton.style.transform = `scale(${newScale})`;
             noButton.style.opacity = newOpacity;
 
             if (newOpacity <= 0) {
-                noButton.style.display = "none"; // Hide the button completely when fully faded
+                noButton.style.display = "none";
             }
         }
 
@@ -209,6 +201,17 @@
             noButton.style.transform = 'scale(1)';
             noClickCount = 0;
             messageContainer.style.display = 'none';
+            reactionGif.style.display = 'none';
+        }
+
+        function playSound(type, callback = null) {
+            if (sounds[type]) {
+                sounds[type].currentTime = 0;
+                sounds[type].play();
+                if (callback) {
+                    sounds[type].onended = callback;
+                }
+            }
         }
 
         function createHearts() {
