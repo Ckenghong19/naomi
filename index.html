@@ -3,215 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Will You Be My Valentine?</title>
+    <title>Will you be my Valentine?</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;600&family=Quicksand:wght@500&display=swap');
-
         body {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background: url('https://placekitten.com/800/800') no-repeat center center fixed;
-            background-size: cover;
-            font-family: 'Raleway', sans-serif;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
             text-align: center;
-            margin: 0;
+            background-color: pink;
             overflow: hidden;
+            position: relative;
+            width: 1980px;
+            height: 1080px;
+            margin: 0;
         }
         h1 {
-            color: #ff5e78;
-            font-size: 8vw;
-            text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.8);
+            font-size: 3rem;
+            position: relative;
+            z-index: 10;
         }
-        #container {
-            text-align: center;
+        .container {
             margin-top: 20px;
+            position: relative;
+            width: 100%;
+            height: 70vh;
+            border: 2px dashed white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            left: 0;
+            top: 20vh;
         }
-        .button {
-            font-size: 6vw;
-            padding: 12px 25px;
-            margin: 15px;
-            cursor: pointer;
-            border-radius: 10px;
-            transition: all 0.3s ease;
-            font-family: 'Quicksand', sans-serif;
+        .btn {
+            font-size: 1.5rem;
+            padding: 10px 20px;
             border: none;
-            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 10px;
+            position: absolute;
         }
         #yes {
-            background-color: #ff5e78;
-            color: white;
+            background-color: lightgreen;
+            z-index: 1;
+            left: 10px;
         }
         #no {
-            background-color: #4b7bec;
-            color: white;
-            position: relative;
+            background-color: lightcoral;
+            z-index: 2;
         }
-        #cat-container, #happy-cat, #yay-animation {
-            display: none;
-            margin-top: 20px;
-            animation: fadeIn 1s ease-in-out;
-        }
-        #yay-animation {
-            font-size: 8vw;
-            color: #ff4081;
-            font-weight: bold;
-            text-shadow: 2px 2px 10px rgba(255, 64, 129, 0.7);
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            animation: fadeOut 2s ease-in-out forwards;
-        }
-        #kiss {
-            width: 35vw;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0);
-            animation: kissAnimation 1s ease-in-out forwards;
-        }
-        #dedication {
-            position: absolute;
-            bottom: 5%;
-            font-size: 5vw;
-            color: white;
-            background: rgba(0, 0, 0, 0.5);
-            padding: 10px 20px;
-            border-radius: 10px;
-        }
-
-        @keyframes floatUp {
-            0% { transform: translateY(0px); }
-            100% { transform: translateY(-20px); }
-        }
-        @keyframes fadeIn {
-            0% { opacity: 0; transform: scale(0.8); }
-            100% { opacity: 1; transform: scale(1); }
-        }
-        @keyframes fadeOut {
-            0% { opacity: 1; }
-            100% { opacity: 0; }
-        }
-        @keyframes kissAnimation {
-            0% { transform: translate(-50%, -50%) scale(0); }
-            100% { transform: translate(-50%, -50%) scale(1.5); }
-        }
-
-        @media only screen and (max-width: 768px) {
-            h1 {
-                font-size: 8vw;
-            }
-            .button {
-                font-size: 6vw;
-                padding: 12px 25px;
-            }
-            #yes {
-                font-size: 6vw;
-            }
-            #no {
-                font-size: 6vw;
-                padding: 12px 25px;
-            }
-            #kiss {
-                width: 35vw;
-            }
-            #dedication {
-                font-size: 5vw;
-                padding: 8px 18px;
-            }
-        }
-
     </style>
 </head>
 <body>
-
-    <h1>Will You Be My Valentine? 💖</h1>
-
-    <div id="container">
-        <button id="yes" class="button" style="font-size: 20px;">Yes</button>
-        <button id="no" class="button">No</button>
+    <h1>Will you be my Valentine?</h1>
+    <div class="container" id="buttonContainer">
+        <button id="yes" class="btn" onclick="yesClicked()">Yes</button>
+        <button id="no" class="btn" onclick="noClicked()">No</button>
     </div>
-
-    <div id="cat-container">
-        <img id="begging-cat" src="https://placekitten.com/200/200" width="150px">
-    </div>
-
-    <img id="happy-cat" src="https://placekitten.com/400/400" width="180px">
-
-    <div id="yay-animation">Yayyyy! 💕</div>
-    <img id="kiss" src="https://i.imgur.com/2chV8gU.gif">
-
-    <div id="dedication">Dedicated to Naomi Tan Xiao Rui 💕 | Made with love by KH</div>
 
     <script>
-        let yesButton = document.getElementById("yes");
-        let noButton = document.getElementById("no");
-        let catContainer = document.getElementById("cat-container");
-        let happyCat = document.getElementById("happy-cat");
-        let yayAnimation = document.getElementById("yay-animation");
-        let kiss = document.getElementById("kiss");
-        let yesSize = 20;
-
+        let noButton = document.getElementById('no');
+        let yesButton = document.getElementById('yes');
+        let buttonContainer = document.getElementById('buttonContainer');
         let noTexts = [
-            "Pleaseee 🥺", "Are you really sure? 😢", "Think again? 😖", 
-            "Don't break my heart 💔", "I'm so sad now... 😭", 
-            "But whyyy? 😔", "Pretty please? 🥹", "Give me a chance! 🙏",
-            "I'll be the best Valentine ever! 😘", "One more chance? 🥺", 
-            "I’ll cry if you say no again 😭", "What if I give you chocolates? 🍫",
-            "Pwease don’t do this 🥺👉👈", "You’re breaking my tiny heart 💞",
-            "Pretty please with a cherry on top 🍒", "I can’t take it anymore 🥺", 
-            "I’ll be forever sad 😢", "Just say yes, pwease? 🥹💕", 
-            "Don't let my heart break! 💔", "Don't leave me hanging 🥺", 
-            "I’ll be your best valentine! 😍", "You're my only hope 💖"
+            "Are you sure? 😿", "Please reconsider! 🥺", "Don't break my heart 💔", "Pretty please? 🐱", 
+            "You can't resist me! 😽", "Think about the cats! 🐈", "Give love a chance! 💕", 
+            "This is your last chance! 😾", "Even the stars want us together! ✨", "Don't let me cry alone... 😢", 
+            "We are meant to be! 💞", "One more chance? 🥰", "Don't be cold like a winter night! ❄️", 
+            "Say yes, and I'll bring you cookies! 🍪", "You know you want to! 😉"
         ];
-        
-        let usedTexts = [];
+        let noClickCount = 0;
+        let yesSize = 1;
 
-        function getNewText() {
-            if (noTexts.length === 0) {
-                noTexts = [...usedTexts];
-                usedTexts = [];
-            }
-            let index = Math.floor(Math.random() * noTexts.length);
-            let newText = noTexts.splice(index, 1)[0];
-            usedTexts.push(newText);
-            return newText;
+        function yesClicked() {
+            window.location.href = "yes.html";
         }
 
-        function disableNoButton() {
-            noButton.disabled = true;
-            noButton.style.backgroundColor = "#ddd"; // Disable visual feedback
+        function moveButtonRandomly(button) {
+            let containerRect = buttonContainer.getBoundingClientRect();
+            let maxX = containerRect.width - button.offsetWidth;
+            let maxY = containerRect.height - button.offsetHeight;
+            let newX = Math.random() * maxX + containerRect.left;
+            let newY = Math.random() * maxY + containerRect.top;
+            button.style.left = `${newX}px`;
+            button.style.top = `${newY}px`;
         }
 
-        noButton.addEventListener("click", function() {
-            yesSize += 10; 
-            yesButton.style.fontSize = yesSize + "px";
-            yesButton.style.padding = (yesSize / 2) + "px " + (yesSize) + "px";
-
-            noButton.textContent = getNewText();
-            catContainer.style.display = "block";
-
-            // If Yes button grows large enough, cover and disable "No"
-            if (yesSize > 80) {
-                disableNoButton();
+        function noClicked() {
+            noButton.textContent = noTexts[noClickCount % noTexts.length];
+            noClickCount++;
+            yesSize += 0.2;
+            yesButton.style.transform = `scale(${yesSize})`;
+            yesButton.style.maxWidth = `${buttonContainer.clientWidth}px`;
+            yesButton.style.maxHeight = `${buttonContainer.clientHeight}px`;
+            
+            moveButtonRandomly(noButton);
+            
+            let yesRect = yesButton.getBoundingClientRect();
+            if (yesRect.width >= buttonContainer.clientWidth && yesRect.height >= buttonContainer.clientHeight) {
+                noButton.style.display = 'none';
             }
-        });
-
-        yesButton.addEventListener("click", function() {
-            alert("Yay! You said YES! ❤️");
-            catContainer.style.display = "none";
-            happyCat.style.display = "block";
-            yayAnimation.style.display = "block";
-            kiss.style.display = "block";
-            setTimeout(() => {
-                yayAnimation.style.display = "none";
-                kiss.style.display = "none";
-            }, 2000);
-        });
+        }
     </script>
-
 </body>
 </html>
