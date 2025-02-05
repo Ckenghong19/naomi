@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Will you be my Valentine Naomi?</title>
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/canvas-confetti/1.0.0/confetti.min.js"></script>
     <style>
         body {
             font-family: 'Pacifico', cursive;
@@ -34,8 +33,8 @@
             justify-content: center;
             align-items: center;
             gap: 20px;
-            width: 40vw;
-            height: 40vh;
+            width: 30vw;
+            height: 30vh;
             border: 3px solid #D85C5C;
             border-radius: 20px;
             background-color: #FA8072;
@@ -57,11 +56,13 @@
         #yes {
             background-color: #2afc00;
             color: black;
+            transition: transform 0.3s ease;
         }
 
         #no {
             background-color: #fc0000;
             color: black;
+            transition: left 0.3s ease, top 0.3s ease;
         }
 
         #yayMessage {
@@ -69,13 +70,15 @@
             display: none;
             color: #D85C5C;
             margin-top: 20vh;
-            animation: heartBeat 1.5s infinite;
+            animation: typing 2s steps(22) forwards;
+            overflow: hidden;
+            white-space: nowrap;
+            width: 0;
         }
 
-        @keyframes heartBeat {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
         }
 
         .signature {
@@ -84,7 +87,7 @@
             margin-top: 3vh;
         }
 
-        #goBack, #muteButton {
+        #goBack {
             font-family: 'Pacifico', cursive;
             display: none;
             margin-top: 20px;
@@ -96,12 +99,6 @@
             background-color: #FA8072;
             color: white;
         }
-
-        #loveGif {
-            display: none;
-            width: 200px;
-            margin-top: 20px;
-        }
     </style>
 </head>
 <body>
@@ -112,15 +109,9 @@
     </div>
     
     <div id="yayMessage">He He. You're mine now ❤️</div>
-    <img id="loveGif" src="https://media.giphy.com/media/l0HlNQ03J5JxX6lva/giphy.gif" alt="Love GIF">
     <button id="goBack" onclick="goBack()">Go Back</button>
-    <button id="muteButton" onclick="toggleMusic()">🔊 Mute</button>
     
     <div class="signature">By KH ❤️</div>
-    
-    <audio id="bgMusic" loop>
-        <source src="your-music-file.mp3" type="audio/mpeg">
-    </audio>
     
     <script>
         let noButton = document.getElementById('no');
@@ -128,62 +119,43 @@
         let yayMessage = document.getElementById('yayMessage');
         let buttonContainer = document.getElementById('button-container');
         let goBackButton = document.getElementById('goBack');
-        let loveGif = document.getElementById('loveGif');
-        let muteButton = document.getElementById('muteButton');
-        let bgMusic = document.getElementById('bgMusic');
         let noClickCount = 0;
         let maxClicks = 10;
 
         function yesClicked() {
             buttonContainer.style.display = 'none';
             yayMessage.style.display = 'block';
-            loveGif.style.display = 'block';
             goBackButton.style.display = 'block';
-            muteButton.style.display = 'block';
-            bgMusic.play();
-          }
+        }
 
         function noClicked() {
             if (noClickCount < maxClicks) {
-                noButton.textContent = "Nuh Uh";
                 noClickCount++;
+                noButton.textContent = "Nuh Uh";
                 moveButtonRandomly(noButton);
-                yesButton.style.width = `${noClickCount * 10}%`;
-                yesButton.style.height = `${noClickCount * 10}%`;
+                let scaleFactor = 1 + (noClickCount * 0.4);
+                yesButton.style.transform = `scale(${scaleFactor})`;
                 if (noClickCount === maxClicks) {
                     noButton.style.display = 'none';
                 }
             }
         }
-      function moveButtonRandomly(button) {
+        
+        function moveButtonRandomly(button) {
             let container = document.querySelector('.button-container');
             let maxX = container.clientWidth - button.clientWidth;
             let maxY = container.clientHeight - button.clientHeight;
-            button.style.left = `${Math.random() * maxX}px`;
-            button.style.top = `${Math.random() * maxY}px`;
+            button.style.left = `${Math.min(Math.random() * maxX, maxX - 10)}px`;
+            button.style.top = `${Math.min(Math.random() * maxY, maxY - 10)}px`;
         }
 
         function goBack() {
             buttonContainer.style.display = 'flex';
             yayMessage.style.display = 'none';
-            loveGif.style.display = 'none';
             goBackButton.style.display = 'none';
-            muteButton.style.display = 'none';
             noButton.style.display = 'block';
             noClickCount = 0;
-            yesButton.style.width = "auto";
-            yesButton.style.height = "auto";
-            bgMusic.pause();
-        }
-
-        function toggleMusic() {
-            if (bgMusic.paused) {
-                bgMusic.play();
-                muteButton.textContent = "🔇 Mute";
-            } else {
-                bgMusic.pause();
-                muteButton.textContent = "🔊 Unmute";
-            }
+            yesButton.style.transform = "scale(1)";
         }
     </script>
 </body>
