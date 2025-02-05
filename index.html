@@ -194,7 +194,7 @@
         }
 
         function createHearts() {
-            for (let i = 0; i < 20; i++) {
+            setInterval(() => {
                 let heart = document.createElement('div');
                 heart.innerHTML = '❤️';
                 heart.classList.add('heart');
@@ -203,7 +203,7 @@
                 heart.style.animationDuration = duration + 's';
                 document.body.appendChild(heart);
                 setTimeout(() => heart.remove(), duration * 1000);
-            }
+            }, 500);
         }
     </script>
 </body>
