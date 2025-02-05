@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Will you be my Valentine?</title>
+    <title>Will you be my Valentine Naomi?</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
             text-align: center;
-            background-color: #F0D4C6; /* Light pastel background */
+            background-color: #F0D4C6;
             margin: 0;
             padding: 0;
             height: 100vh;
@@ -21,10 +21,9 @@
 
         h1 {
             font-size: 3rem;
-            color: #D85C5C; /* Kiki's red bow color */
+            color: #D85C5C;
             margin-top: 10vh;
-            z-index: 10;
-            font-family: 'Georgia', serif; /* Elegant font for the header */
+            font-family: 'Georgia', serif;
         }
 
         .button-container {
@@ -50,29 +49,17 @@
             transition: all 0.3s ease;
             border-radius: 10px;
             position: absolute;
-            font-family: 'Arial', sans-serif;
         }
 
         #yes {
-            background-color: #F1B6B6; /* Light pastel red */
+            background-color: #F1B6B6;
             color: white;
+            transition: transform 0.3s ease-out;
         }
 
         #no {
-            background-color: #A7D8C2; /* Pastel green */
+            background-color: #A7D8C2;
             color: white;
-        }
-
-        #restart {
-            font-size: 1.2rem;
-            padding: 12px 20px;
-            background-color: #F1B6B6;
-            position: absolute;
-            bottom: 5vh;
-            left: 50%;
-            transform: translateX(-50%);
-            cursor: pointer;
-            display: none;
         }
 
         #yayMessage {
@@ -82,92 +69,72 @@
             margin-top: 20vh;
         }
 
-        #button-container-hidden {
-            display: none;
-        }
-
-        .cat-meme {
-            display: none;
-        }
-
-        .kiki-background {
-            background-image: url('https://images.unsplash.com/photo-1569159000-14f7d3a4cc93'); /* Public background image */
-            background-size: cover;
-            background-position: center;
-            height: 100vh;
+        .signature {
             position: absolute;
-            width: 100%;
-            top: 0;
-            left: 0;
-            z-index: -1;
-        }
-
-        @keyframes bounce {
-            0% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0); }
-        }
-
-        #yes, #no {
-            animation: bounce 1s ease infinite;
+            bottom: 10px;
+            font-size: 1.2rem;
+            color: #D85C5C;
         }
     </style>
 </head>
 <body>
-    <div class="kiki-background"></div> <!-- Public Kiki's inspired background image -->
-    <h1>Will you be my Valentine?</h1>
+    <h1>Will you be my Valentine Naomi?</h1>
     <div id="button-container" class="button-container">
         <button id="yes" class="btn" onclick="yesClicked()">Yes</button>
         <button id="no" class="btn" onclick="noClicked()">No</button>
     </div>
-
-    <img id="catMeme" class="cat-meme" src="https://placekitten.com/300/200" alt="Cat Meme"> <!-- Public cat meme image -->
     
     <div id="yayMessage">YAYYYYY!!!!</div>
-    <button id="restart" class="btn" onclick="restartPage()">Go Back</button>
-
+    
     <script>
         let noButton = document.getElementById('no');
         let yesButton = document.getElementById('yes');
-        let restartButton = document.getElementById('restart');
         let yayMessage = document.getElementById('yayMessage');
         let buttonContainer = document.getElementById('button-container');
-        let catMeme = document.getElementById('catMeme');
-        let noTexts = [
-            "Please, don't leave me! 😿", "I beg you! 🥺", "I can't live without you! 😢", 
-            "Please say yes! 🙏", "I need you more than anything! 😽", "You're my only hope! 💖", 
-            "You are my everything! 💞", "I can’t imagine life without you! 😻", 
-            "Don't break my heart! 💔", "I will love you forever if you say yes! 😻", 
-            "I'm begging you, please say yes! 🥺", "I’ll never ask again if you say yes! 💖", 
-            "Please make my dream come true! 😢", "You’re my sunshine, please say yes! 🌞", 
-            "I can't bear this anymore! 😾", "All I want is you! 💞", "You mean the world to me! 🌍", 
-            "Please don’t say no, I need you! 🥺", "You’re the one for me! 💘", 
-            "I promise I'll make you happy! 😊", "I'm lost without you... 😿"
-        ];
         let noClickCount = 0;
         let yesSize = 1;
+        let maxSizeReached = false;
+        let noTexts = [
+            "Are you sure? My heart is breaking! 💔", 
+            "But we're perfect together! 😭", 
+            "I made cookies... please stay? 🍪🥺", 
+            "I'll be the happiest if you say yes! 😊", 
+            "Don't you love me just a little? 😢", 
+            "I’ll give you unlimited hugs! 🤗", 
+            "Saying yes comes with free cuddles! 🐻", 
+            "If you say yes, I'll be your biggest fan! 🎉", 
+            "My heart is sad, only you can fix it! 💘", 
+            "You're the peanut butter to my jelly! 🥜🍇", 
+            "Let's make this the best Valentine's ever! 💕", 
+            "I promise to make you laugh forever! 😆", 
+            "One yes = one million kisses! 😘", 
+            "Do you really want to make me cry? 😭", 
+            "My love for you is infinite! ♾️❤️", 
+            "Even the stars want us to be together! ✨", 
+            "Every 'No' makes me sadder... 🥺", 
+            "If you click yes, I'll do a happy dance! 💃", 
+            "You wouldn't want to break my heart, right? 💔", 
+            "Please? I'll do anything for you! 🙏"
+        ];
 
-        // Function for clicking "Yes"
         function yesClicked() {
             buttonContainer.style.display = 'none';
-            catMeme.style.display = 'none';
             yayMessage.style.display = 'block';
-            restartButton.style.display = 'inline-block';
         }
 
-        // Function for clicking "No"
         function noClicked() {
             noButton.textContent = noTexts[noClickCount % noTexts.length];
             noClickCount++;
-
             moveButtonRandomly(noButton);
-            yesSize = Math.min(yesSize + 0.2, 2); 
-            yesButton.style.transform = `scale(${yesSize})`;
-
-            let containerRect = document.querySelector('.button-container').getBoundingClientRect();
-            let yesButtonRect = yesButton.getBoundingClientRect();
-            if (yesButtonRect.width >= containerRect.width || yesButtonRect.height >= containerRect.height) {
-                noButton.style.display = 'none';
+            if (!maxSizeReached) {
+                yesSize += 0.1;
+                yesButton.style.transform = `scale(${yesSize})`;
+                let containerRect = document.querySelector('.button-container').getBoundingClientRect();
+                let yesButtonRect = yesButton.getBoundingClientRect();
+                if (yesButtonRect.width >= containerRect.width || yesButtonRect.height >= containerRect.height) {
+                    maxSizeReached = true;
+                    noButton.style.display = 'none';
+                }
             }
         }
 
@@ -181,10 +148,7 @@
             button.style.left = `${newX}px`;
             button.style.top = `${newY}px`;
         }
-
-        function restartPage() {
-            window.history.back(); 
-        }
     </script>
+    <div class="signature">By KH ❤️</div>
 </body>
 </html>
