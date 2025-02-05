@@ -11,51 +11,44 @@
             background-color: pink;
             overflow: hidden;
             position: relative;
-            width: 1980px;
-            height: 1080px;
             margin: 0;
+            height: 100vh; /* Full screen height */
         }
         h1 {
             font-size: 3rem;
             position: relative;
             z-index: 10;
+            margin-top: 5vh;
         }
-        .container {
-            margin-top: 20px;
-            position: relative;
-            width: 100%;
-            height: 70vh;
-            border: 2px dashed white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .button-container {
             position: absolute;
-            left: 0;
-            top: 20vh;
+            top: 20vh; /* Position the container below the title */
+            width: 100%;
+            height: 50vh; /* Allocate space for the buttons to move and grow */
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
         }
         .btn {
             font-size: 1.5rem;
-            padding: 10px 20px;
+            padding: 20px 40px;
             border: none;
             cursor: pointer;
             transition: all 0.3s ease;
             border-radius: 10px;
-            position: absolute;
+            position: relative;
         }
         #yes {
             background-color: lightgreen;
-            z-index: 1;
-            left: 10px;
         }
         #no {
             background-color: lightcoral;
-            z-index: 2;
         }
     </style>
 </head>
 <body>
     <h1>Will you be my Valentine?</h1>
-    <div class="container" id="buttonContainer">
+    <div class="button-container">
         <button id="yes" class="btn" onclick="yesClicked()">Yes</button>
         <button id="no" class="btn" onclick="noClicked()">No</button>
     </div>
@@ -63,27 +56,37 @@
     <script>
         let noButton = document.getElementById('no');
         let yesButton = document.getElementById('yes');
-        let buttonContainer = document.getElementById('buttonContainer');
         let noTexts = [
-            "Are you sure? 😿", "Please reconsider! 🥺", "Don't break my heart 💔", "Pretty please? 🐱", 
-            "You can't resist me! 😽", "Think about the cats! 🐈", "Give love a chance! 💕", 
-            "This is your last chance! 😾", "Even the stars want us together! ✨", "Don't let me cry alone... 😢", 
-            "We are meant to be! 💞", "One more chance? 🥰", "Don't be cold like a winter night! ❄️", 
-            "Say yes, and I'll bring you cookies! 🍪", "You know you want to! 😉"
+            "Please, don't leave me! 😿", "I beg you! 🥺", "I can't live without you! 😢", 
+            "Please say yes! 🙏", "I need you more than anything! 😽", "You're my only hope! 💖", 
+            "You are my everything! 💞", "I can’t imagine life without you! 😻", 
+            "Don't break my heart! 💔", "I will love you forever if you say yes! 😻", 
+            "I'm begging you, please say yes! 🥺", "I’ll never ask again if you say yes! 💖", 
+            "Please make my dream come true! 😢", "You’re my sunshine, please say yes! 🌞", 
+            "I can't bear this anymore! 😾", "All I want is you! 💞", "You mean the world to me! 🌍", 
+            "Please don’t say no, I need you! 🥺", "You’re the one for me! 💘", 
+            "I promise I'll make you happy! 😊", "I'm lost without you... 😿"
         ];
         let noClickCount = 0;
         let yesSize = 1;
+
+        // Adjust the height of the reserved title space and keep it free of buttons
+        const titleHeight = document.querySelector('h1').offsetHeight;
+        const minSpaceBelowTitle = 20; // Minimum space between title and buttons
+        const container = document.querySelector('.button-container');
+        const containerHeight = container.offsetHeight;
 
         function yesClicked() {
             window.location.href = "yes.html";
         }
 
         function moveButtonRandomly(button) {
-            let containerRect = buttonContainer.getBoundingClientRect();
-            let maxX = containerRect.width - button.offsetWidth;
-            let maxY = containerRect.height - button.offsetHeight;
-            let newX = Math.random() * maxX + containerRect.left;
-            let newY = Math.random() * maxY + containerRect.top;
+            let maxX = container.offsetWidth - button.offsetWidth; // Max X within the container
+            let maxY = containerHeight - button.offsetHeight; // Max Y within the container
+
+            let newX = Math.random() * maxX; // Random X within the container width
+            let newY = Math.random() * maxY; // Random Y within the container height
+
             button.style.left = `${newX}px`;
             button.style.top = `${newY}px`;
         }
@@ -91,16 +94,25 @@
         function noClicked() {
             noButton.textContent = noTexts[noClickCount % noTexts.length];
             noClickCount++;
-            yesSize += 0.2;
+            moveButtonRandomly(noButton); // Move the "No" button randomly within the container
+
+            yesSize += 0.2; // Increase the size of the "Yes" button
             yesButton.style.transform = `scale(${yesSize})`;
-            yesButton.style.maxWidth = `${buttonContainer.clientWidth}px`;
-            yesButton.style.maxHeight = `${buttonContainer.clientHeight}px`;
-            
-            moveButtonRandomly(noButton);
-            
+
+            // Ensure "Yes" button doesn't overlap or touch the title space
             let yesRect = yesButton.getBoundingClientRect();
-            if (yesRect.width >= buttonContainer.clientWidth && yesRect.height >= buttonContainer.clientHeight) {
-                noButton.style.display = 'none';
+            let titleRect = document.querySelector('h1').getBoundingClientRect();
+
+            if (yesRect.top < titleRect.bottom + minSpaceBelowTitle) {
+                yesButton.style.top = `${titleRect.bottom + minSpaceBelowTitle}px`; // Ensure "Yes" button stays below the title even as it grows
+            }
+
+            // Check if the Yes button covers the No button
+            let noRect = noButton.getBoundingClientRect();
+
+            if (yesRect.left <= noRect.left && yesRect.top <= noRect.top && 
+                yesRect.right >= noRect.right && yesRect.bottom >= noRect.bottom) {
+                noButton.style.display = 'none'; // Hide the "No" button when "Yes" is big enough to cover it
             }
         }
     </script>
