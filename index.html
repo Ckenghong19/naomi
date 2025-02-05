@@ -74,6 +74,18 @@
             color: #D85C5C;
             margin-top: 3vh;
         }
+
+        #goBack {
+            display: none;
+            margin-top: 20px;
+            font-size: 1.2rem;
+            padding: 12px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 10px;
+            background-color: #A7D8C2;
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -84,6 +96,7 @@
     </div>
     
     <div id="yayMessage">YAYYYYY!!!! You're mine now ❤️</div>
+    <button id="goBack" onclick="goBack()">Go Back</button>
     
     <div class="signature">By KH ❤️</div>
     
@@ -92,6 +105,7 @@
         let yesButton = document.getElementById('yes');
         let yayMessage = document.getElementById('yayMessage');
         let buttonContainer = document.getElementById('button-container');
+        let goBackButton = document.getElementById('goBack');
         let noClickCount = 0;
         let maxClicks = 10;
         let noTexts = [
@@ -104,12 +118,12 @@
             "Aight, you left me no choice. Time for some magic🪄", 
             "Skidaddle, skadoodle, you're now in love with me🧙‍♂️", 
             "He He✨", 
-            "You're now in love with me✨"
         ];
 
         function yesClicked() {
             buttonContainer.style.display = 'none';
             yayMessage.style.display = 'block';
+            goBackButton.style.display = 'block';
         }
 
         function noClicked() {
@@ -135,6 +149,17 @@
             let newY = Math.random() * maxY;
             button.style.left = `${newX}px`;
             button.style.top = `${newY}px`;
+        }
+
+        function goBack() {
+            buttonContainer.style.display = 'flex';
+            yayMessage.style.display = 'none';
+            goBackButton.style.display = 'none';
+            noButton.style.display = 'block';
+            noClickCount = 0;
+            yesButton.style.width = "auto";
+            yesButton.style.height = "auto";
+            noButton.textContent = "No";
         }
     </script>
 </body>
