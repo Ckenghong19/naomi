@@ -54,7 +54,7 @@
             background-color: #FF6961;
             color: black;
             position: absolute;
-            transition: top 0.3s ease, left 0.3s ease, transform 0.3s ease, opacity 0.3s ease;
+            transition: top 0.3s ease, left 0.3s ease, opacity 0.3s ease;
         }
 
         .message-container {
@@ -192,6 +192,19 @@
         let noClickCount = 0;
         let heartInterval; // Variable to store the interval ID for floating hearts
 
+        let noButtonTexts = [
+            "Wait, what",
+            "But, why though",
+            "You can't do this to me",
+            "Why are you doing this",
+            "STAHPPPP",
+            "Fine, click me if you can",
+            "Okok, this one is the last one",
+            "SIKE",
+            "Byeeeeeee~",
+            "He He"
+        ];
+
         function yesClicked() {
             playSound('yes', () => {
                 setTimeout(() => {
@@ -233,15 +246,24 @@
             noButton.style.left = `${Math.max(10, Math.random() * maxX)}px`;
             noButton.style.top = `${Math.max(10, Math.random() * maxY)}px`;
 
+            // Update text on every click
+            if (noClickCount < noButtonTexts.length) {
+                noButton.innerText = noButtonTexts[noClickCount];
+            }
+
             noClickCount++;
-            let newScale = Math.max(0.3, 1 - noClickCount * 0.1);
-            let newOpacity = Math.max(0, 1 - noClickCount * 0.1);
 
-            noButton.style.transform = `scale(${newScale})`;
-            noButton.style.opacity = newOpacity;
+            // Slowly fade the "No" button
+            let opacity = 1 - (noClickCount * 0.1);
+            if (opacity >= 0) {
+                noButton.style.opacity = opacity;
+            }
 
-            if (newOpacity <= 0) {
-                noButton.style.display = "none";
+            // Fade away after 10 evades
+            if (noClickCount >= noButtonTexts.length) {
+                setTimeout(() => {
+                    noButton.style.display = "none";
+                }, 300); // Delay hiding to allow the final fade-out
             }
         }
 
@@ -262,7 +284,6 @@
             yesButton.style.display = 'block';
             noButton.style.display = 'block';
             noButton.style.opacity = 1;
-            noButton.style.transform = 'scale(1)';
             noClickCount = 0;
             messageContainer.style.display = 'none';
             reactionGif.style.display = 'none';
