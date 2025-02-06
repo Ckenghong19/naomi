@@ -121,6 +121,33 @@
             border-radius: 10px;
             margin-top: 20px;
         }
+
+        .meme-img {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 360px;
+            opacity: 1;
+            transition: opacity 0.5s ease; /* Faster fade-out */
+        }
+
+        .cat-gif {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            opacity: 1;
+            z-index: 999;
+            animation: catGifAnimation 1s linear infinite;
+        }
+
+        @keyframes catGifAnimation {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
     </style>
 </head>
 <body>
@@ -141,21 +168,29 @@
     <div class="signature">By KH</div>
 
     <script>
+        // Preloading audio files
+        let sounds = {
+            yes: new Audio('https://www.myinstants.com/media/sounds/happy-happy-happy-cat.mp3'),
+            no: new Audio('https://www.myinstants.com/media/sounds/vine-boom.mp3'), // Vine Boom sound
+            goBack: new Audio('https://www.myinstants.com/media/sounds/whu-bird.mp3'),
+            extra: new Audio('https://www.myinstants.com/media/sounds/sum-fuk.mp3')
+        };
+
+        // Play sounds when the page loads
+        window.onload = function() {
+            playSound('yes');
+        }
+
         let noButton = document.getElementById('no');
         let yesButton = document.getElementById('yes');
         let yayMessage = document.getElementById('yayMessage');
         let goBackButton = document.getElementById('goBack');
         let messageContainer = document.getElementById('messageContainer');
         let reactionGif = document.getElementById('reactionGif');
+        let catGif;
 
         let noClickCount = 0;
-
-        let sounds = {
-            yes: new Audio('https://www.myinstants.com/media/sounds/happy-happy-happy-cat.mp3'),
-            no: new Audio('https://www.myinstants.com/media/sounds/nuh-uh.mp3'),
-            goBack: new Audio('https://www.myinstants.com/media/sounds/whu-bird.mp3'),
-            extra: new Audio('https://www.myinstants.com/media/sounds/sum-fuk.mp3')
-        };
+        let heartInterval; // Variable to store the interval ID for floating hearts
 
         function yesClicked() {
             playSound('yes', () => {
@@ -163,18 +198,35 @@
                     playSound('extra');
                     reactionGif.style.display = 'block';
                     goBackButton.style.display = 'block';
+                    stopCatGif(); // Stop the cat gif when the reaction gif starts playing
                 }, 500);
             });
+
+            // Show the cat gif when "Yes" is clicked and play on repeat
+            catGif = document.createElement('img');
+            catGif.src = 'https://media.tenor.com/5nSKlBlwdkIAAAAj/cat.gif';
+            catGif.className = 'cat-gif';
+            document.body.appendChild(catGif);
 
             yesButton.style.display = 'none';
             noButton.style.display = 'none';
             messageContainer.style.display = 'flex';
             yayMessage.style.display = 'inline-block';
-            createHearts();
+            createHearts(); // Start creating hearts
+        }
+
+        function stopCatGif() {
+            if (catGif) {
+                catGif.style.opacity = '0'; // Fade out the cat gif
+                setTimeout(() => catGif.remove(), 500); // Remove the cat gif after fading
+            }
         }
 
         function moveNoButton() {
             playSound('no');
+
+            // Show meme image briefly whenever the user tries to click No
+            showMemeImage();
 
             let maxX = window.innerWidth - noButton.offsetWidth - 100;
             let maxY = window.innerHeight - noButton.offsetHeight - 100;
@@ -193,6 +245,18 @@
             }
         }
 
+        function showMemeImage() {
+            let meme = document.createElement('img');
+            meme.src = 'https://media.tenor.com/IyweQyb3MhIAAAAi/the-rock-sus.gif';
+            meme.className = 'meme-img';
+            document.body.appendChild(meme);
+
+            setTimeout(() => {
+                meme.style.opacity = '0'; // fade out the meme
+                setTimeout(() => meme.remove(), 500); // remove the meme after fading
+            }, 1000);
+        }
+
         function goBack() {
             playSound('goBack');
             yesButton.style.display = 'block';
@@ -202,6 +266,7 @@
             noClickCount = 0;
             messageContainer.style.display = 'none';
             reactionGif.style.display = 'none';
+            clearInterval(heartInterval); // Stop the floating hearts when going back
         }
 
         function playSound(type, callback = null) {
@@ -215,7 +280,7 @@
         }
 
         function createHearts() {
-            setInterval(() => {
+            heartInterval = setInterval(() => { // Store the interval ID in heartInterval
                 let heart = document.createElement('div');
                 heart.innerHTML = '❤️';
                 heart.classList.add('heart');
