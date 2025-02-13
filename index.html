@@ -20,6 +20,31 @@
             overflow: hidden;
             position: relative;
         }
+        
+        #backgroundMeme {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            z-index: -1;
+        }
+        
+         #catGifBackground {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            z-index: -1;
+        
+        }
 
         h1 {
             font-size: 3rem;
@@ -130,28 +155,6 @@
             margin-top: 20px;
         }
 
-        .meme-img {
-            position: absolute;
-            top: 20%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 250px;
-            opacity: 1;
-            transition: opacity 0.5s ease; /* Faster fade-out */
-        }
-
-        .cat-gif {
-             
-            position: absolute;
-            top: 35%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 100px;
-            opacity: 1;
-            z-index: 1000;
-            animation: catGifAnimation 1s linear infinite;
-        }
-
         @keyframes catGifAnimation {
             0% { opacity: 1; }
             50% { opacity: 0.7; }
@@ -160,6 +163,8 @@
     </style>
 </head>
 <body>
+    <img id="backgroundMeme" src="https://i.giphy.com/26ghbWoXv3G6ypo8o.webp" alt="Meme Background">
+    <img id="catGifBackground" src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExcHh1aml0b24xNTdubmp4dzZwMTJtNWNheThqN3lsZG1kcWxjMmVveiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/beorHuw3tM7tcAFB0v/giphy.gif" alt="Cat GIF Background">
     <h1>Will you be my Valentine, Naomi?</h1>
     <div class="buttons">
         <button id="yes" class="btn" onclick="yesClicked()">Yes</button>
@@ -225,17 +230,18 @@
                 }, 500);
             });
 
-            // Show the cat gif when "Yes" is clicked and play on repeat
-            catGif = document.createElement('img');
-            catGif.src = 'https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExcHh1aml0b24xNTdubmp4dzZwMTJtNWNheThqN3lsZG1kcWxjMmVveiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/beorHuw3tM7tcAFB0v/giphy.gif';
-            catGif.className = 'cat-gif';
-            document.body.appendChild(catGif);
-
             yesButton.style.display = 'none';
             noButton.style.display = 'none';
             messageContainer.style.display = 'flex';
             yayMessage.style.display = 'inline-block';
             createHearts(); // Start creating hearts
+            let catGif = document.getElementById('catGifBackground');
+            catGif.style.opacity = '1'; // Show the cat gif
+            setTimeout(() => {
+                let reactionGif = document.getElementById('reactionGif');
+                reactionGif.style.display = 'block';
+                catGif.style.opacity = '0'; // Hide the cat gif when reaction gif appears
+            }, 2000);
         }
 
         function stopCatGif() {
@@ -278,14 +284,11 @@
         }
 
         function showMemeImage() {
-            let meme = document.createElement('img');
-            meme.src = 'https://i.giphy.com/26ghbWoXv3G6ypo8o.webp';
-            meme.className = 'meme-img';
-            document.body.appendChild(meme);
+            let meme = document.getElementById('backgroundMeme');
+            meme.style.opacity = "0.4";
 
             setTimeout(() => {
-                meme.style.opacity = '0'; // fade out the meme
-                setTimeout(() => meme.remove(), 500); // remove the meme after fading
+                meme.style.opacity = "0";
             }, 1000);
         }
 
