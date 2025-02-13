@@ -202,7 +202,7 @@
         let goBackButton = document.getElementById('goBack');
         let messageContainer = document.getElementById('messageContainer');
         let reactionGif = document.getElementById('reactionGif');
-        let catGif;
+        let catGif = document.getElementById('catGifBackground');
 
         let noClickCount = 0;
         let heartInterval; // Variable to store the interval ID for floating hearts
@@ -221,12 +221,12 @@
         ];
 
         function yesClicked() {
-            playSound('yes', () => {
+           playSound('yes', () => {
                 setTimeout(() => {
                     playSound('extra');
                     reactionGif.style.display = 'block';
                     goBackButton.style.display = 'block';
-                    stopCatGif(); // Stop the cat gif when the reaction gif starts playing
+                    stopcatGifBackground(); // Stop the cat gif when the reaction gif starts playing
                 }, 500);
             });
 
@@ -235,16 +235,11 @@
             messageContainer.style.display = 'flex';
             yayMessage.style.display = 'inline-block';
             createHearts(); // Start creating hearts
-            let catGif = document.getElementById('catGifBackground');
             catGif.style.opacity = '1'; // Show the cat gif
-            setTimeout(() => {
-                let reactionGif = document.getElementById('reactionGif');
-                reactionGif.style.display = 'block';
-                catGif.style.opacity = '0'; // Hide the cat gif when reaction gif appears
-            }, 2000);
+           
         }
 
-        function stopCatGif() {
+        function stopcatGif() {
             if (catGif) {
                 catGif.style.opacity = '0'; // Fade out the cat gif
                 setTimeout(() => catGif.remove(), 500); // Remove the cat gif after fading
