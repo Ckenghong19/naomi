@@ -141,11 +141,11 @@
         }
 
         .cat-gif {
-            position: relative;
-            top: 50%;
+             position: absolute;
+            top: 42%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 400px;
+            width: 100px;
             opacity: 1;
             z-index: 999;
             animation: catGifAnimation 1s linear infinite;
@@ -226,7 +226,7 @@
 
             // Show the cat gif when "Yes" is clicked and play on repeat
             catGif = document.createElement('img');
-            catGif.src = 'https://media.tenor.com/5nSKlBlwdkIAAAAj/cat.gif';
+            catGif.src = 'https://i.giphy.com/st8Wfzji7jm146Ru7p.webp';
             catGif.className = 'cat-gif';
             document.body.appendChild(catGif);
 
