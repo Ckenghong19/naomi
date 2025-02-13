@@ -231,8 +231,11 @@
             messageContainer.style.display = 'flex';
             yayMessage.style.display = 'inline-block';
             createHearts();
+            
+            // Reset and show the cat GIF again
+            catGif.style.display = 'block';  // Ensure it's displayed
             catGif.style.opacity = '1'; 
-
+            
             yesSound.onended = function () {
                 stopcatGif();
                 playSound('extra');
