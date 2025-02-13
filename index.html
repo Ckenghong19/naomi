@@ -221,28 +221,30 @@
         ];
 
         function yesClicked() {
-           playSound('yes', () => {
-                setTimeout(() => {
-                    playSound('extra');
-                    reactionGif.style.display = 'block';
-                    goBackButton.style.display = 'block';
-                    stopcatGifBackground(); // Stop the cat gif when the reaction gif starts playing
-                }, 500);
-            });
+            let yesSound = sounds['yes'];
+            
+            yesSound.currentTime = 0;
+            yesSound.play();
 
             yesButton.style.display = 'none';
             noButton.style.display = 'none';
             messageContainer.style.display = 'flex';
             yayMessage.style.display = 'inline-block';
-            createHearts(); // Start creating hearts
-            catGif.style.opacity = '1'; // Show the cat gif
-           
+            createHearts();
+            catGif.style.opacity = '1'; 
+
+            yesSound.onended = function () {
+                stopcatGif();
+                playSound('extra');
+                reactionGif.style.display = 'block';
+                goBackButton.style.display = 'block';
+            };
         }
 
         function stopcatGif() {
             if (catGif) {
-                catGif.style.opacity = '0'; // Fade out the cat gif
-                setTimeout(() => catGif.remove(), 500); // Remove the cat gif after fading
+                catGif.style.opacity = '0';
+                setTimeout(() => catGif.style.display = 'none', 500);
             }
         }
 
